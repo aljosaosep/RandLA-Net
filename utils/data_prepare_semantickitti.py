@@ -17,8 +17,9 @@ remap_lut = np.zeros((max_key + 100), dtype=np.int32)
 remap_lut[list(remap_dict.keys())] = list(remap_dict.values())
 
 grid_size = 0.06
-dataset_path = '/data/semantic_kitti/dataset/sequences'
-output_path = '/data/semantic_kitti/dataset/sequences' + '_' + str(grid_size)
+semkitti_dir = '/work/aljosa/datasets/kitti-odometry' #  /data/semantic_kitti/d
+dataset_path = os.path.join(semkitti_dir, 'dataset/sequences')
+output_path = os.path.join(semkitti_dir, 'dataset/sequences' + '_' + str(grid_size))
 seq_list = np.sort(os.listdir(dataset_path))
 
 for seq_id in seq_list:

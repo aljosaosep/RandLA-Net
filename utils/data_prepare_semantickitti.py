@@ -3,6 +3,8 @@ import numpy as np
 from os.path import join, exists, dirname, abspath
 from sklearn.neighbors import KDTree
 
+#from pympler.tracker import SummaryTracker
+
 BASE_DIR = dirname(abspath(__file__))
 ROOT_DIR = dirname(BASE_DIR)
 sys.path.append(BASE_DIR)
@@ -34,11 +36,14 @@ for seq_id in seq_list:
     os.makedirs(KDTree_path_out) if not exists(KDTree_path_out) else None
 
     if int(seq_id) < 11:
+
+        # Sequences 0-11
         label_path = join(seq_path, 'labels')
         label_path_out = join(seq_path_out, 'labels')
         os.makedirs(label_path_out) if not exists(label_path_out) else None
         scan_list = np.sort(os.listdir(pc_path))
         for scan_id in scan_list:
+
             print(scan_id)
             points = DP.load_pc_kitti(join(pc_path, scan_id))
             labels = DP.load_label_kitti(join(label_path, str(scan_id[:-4]) + '.label'), remap_lut)
@@ -49,6 +54,7 @@ for seq_id in seq_list:
             np.save(join(label_path_out, scan_id)[:-4], sub_labels)
             with open(KDTree_save, 'wb') as f:
                 pickle.dump(search_tree, f)
+
             if seq_id == '08':
                 proj_path = join(seq_path_out, 'proj')
                 os.makedirs(proj_path) if not exists(proj_path) else None
@@ -57,7 +63,9 @@ for seq_id in seq_list:
                 proj_save = join(proj_path, str(scan_id[:-4]) + '_proj.pkl')
                 with open(proj_save, 'wb') as f:
                     pickle.dump([proj_inds], f)
+
     else:
+        # Sequences 12-end
         proj_path = join(seq_path_out, 'proj')
         os.makedirs(proj_path) if not exists(proj_path) else None
         scan_list = np.sort(os.listdir(pc_path))

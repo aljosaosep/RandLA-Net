@@ -280,7 +280,20 @@ class Plot:
             pc.colors = open3d.Vector3dVector(pc_xyzrgb[:, 3:6] / 255.)
         else:
             pc.colors = open3d.Vector3dVector(pc_xyzrgb[:, 3:6])
-        open3d.draw_geometries([pc])
+
+        # Default behavior: show pcl
+        # open3d.draw_geometries([pc])
+
+        # Aljosa: store image
+        path = "/tmp/test.png"
+        vis = open3d.visualization.Visualizer()
+        vis.create_window()
+        vis.add_geometry(pc)
+        vis.update_geometry()
+        vis.poll_events()
+        vis.update_renderer()
+        vis.capture_screen_image(path)
+        vis.destroy_window()
         return 0
 
     @staticmethod
